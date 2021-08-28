@@ -28,7 +28,7 @@ prompt APPLICATION 103 - Sample Database Application
 -- Application Export:
 --   Application:     103
 --   Name:            Sample Database Application
---   Date and Time:   01:53 Friday August 27, 2021
+--   Date and Time:   22:39 Saturday August 28, 2021
 --   Exported By:     DEMO
 --   Flashback:       0
 --   Export Type:     Component Export
@@ -69,7 +69,6 @@ wwv_flow_api.create_plugin(
 '  l_item_size           p_item.element_width%type         := p_item.element_width;',
 '  l_item_name           varchar2(1000)                    := p_item.name;',
 '  l_js_code             varchar2(4000);',
-'  --l_limit               p_item.attribute_01%type:= p_item.attribute_01;',
 '  l_max_tags            p_item.attribute_01%type          := p_item.attribute_01;',
 '  l_target_url          p_item.attribute_02%type          := p_item.attribute_02;',
 '  l_tags_lov            p_item.attribute_03%type          := p_item.attribute_03;',
@@ -80,18 +79,19 @@ wwv_flow_api.create_plugin(
 '  l_page_mode           varchar2(200);',
 '',
 '  l_column_value_list   apex_plugin_util.t_column_value_list;',
-'Begin',
+'begin',
 ' ',
-'  IF apex_application.g_debug ',
-'  THEN',
+'  if apex_application.g_debug ',
+'  then',
 '    apex_plugin_util.debug_page_item ( p_plugin                => p_plugin,',
 '                                       p_page_item             => p_item,',
 '                                       p_value                 => p_param.value,',
 '                                       p_is_readonly           => l_read_only,',
 '                                       p_is_printer_friendly   => l_is_printer_friendly);',
-'  END IF;',
+'  end if;',
 '',
-'  -- Modal Dialog or Normal page? Needed for a proper redirect to a report page',
+'  -- Is the current page a Modal Dialog or Normal page? ',
+'  -- Needed for a proper redirect to a different page.',
 '  select case',
 '           when page_mode like ''Modal%'' then ''modal''',
 '           else ''normal''',
@@ -123,7 +123,7 @@ wwv_flow_api.create_plugin(
 '           ,p_component_name   => p_item.name',
 '            );',
 '',
-'  --Example of a tags LOV list',
+'  --Example of a tags LOV list:',
 '  --l_tags_lov := ''[''''BAG'''', ''''WOMEN'''', ''''MEN'''', ''''ACCESSORY'''']'';',
 '  if l_column_value_list(1).count > 0',
 '  then',
@@ -155,7 +155,7 @@ wwv_flow_api.create_plugin(
 ,p_substitute_attributes=>true
 ,p_subscribe_plugin_settings=>true
 ,p_version_identifier=>'1.0'
-,p_files_version=>47
+,p_files_version=>49
 );
 wwv_flow_api.create_plugin_attribute(
  p_id=>wwv_flow_api.id(27693356293980220)
@@ -176,10 +176,26 @@ wwv_flow_api.create_plugin_attribute(
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>2
 ,p_display_sequence=>20
-,p_prompt=>'Link to tags report page'
+,p_prompt=>'Tag link'
 ,p_attribute_type=>'LINK'
 ,p_is_required=>false
 ,p_is_translatable=>false
+,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Link Item Name P1_TAG, Value !TAG!',
+'',
+'Sample report query for a tag:',
+'',
+'select p.product_id,',
+'       p.product_name, ',
+'       p.product_description, ',
+'       tags',
+'from demo_product_info p',
+'where (:P1_TAG is null',
+'   or instr('',''||tags||'','' , '',''||:P3_TAG||'','') > 0',
+')'))
+,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Optional link to another page when clicking on a tag. For example, a report page to show all records with that tag.',
+'Use !TAG! to pass the value of tag.'))
 );
 wwv_flow_api.create_plugin_attribute(
  p_id=>wwv_flow_api.id(30937058639484940)
@@ -533,7 +549,7 @@ wwv_flow_api.g_varchar2_table(124) := '09092F2F76617220246974656D203D20242874686
 wwv_flow_api.g_varchar2_table(125) := '292E7465787428293B0A0909090909097661722076616C7565203D20242874686973292E617474722827646174612D74616727293B202F2F2E617474722827646174612D746167272C2076616C7565293B0A090909090909617065782E64656275672E6C';
 wwv_flow_api.g_varchar2_table(126) := '6F6728225461672076616C7565203A20222C2076616C7565293B0A0909090909090A090909090909617065782E64656275672E6C6F6728225061737365642075726C2066726F6D2070616765206D6F64653A20222C2073656C662E6F7074696F6E732E75';
 wwv_flow_api.g_varchar2_table(127) := '726C2C2073656C662E6F7074696F6E732E706167656D6F6465293B0A0909090909097661722075726C203D2073656C662E6F7074696F6E732E75726C3B0A0909090909090A0909090909096966202875726C2E6C656E677468203E20302029207B0A0909';
-wwv_flow_api.g_varchar2_table(128) := '0909090920202076617220746172676574203D2075726C2E7265706C61636528272354414723272C2076616C7565293B0A202020200909090909202020617065782E64656275672E6C6F6728225461726765743A20222C20746172676574293B0A090909';
+wwv_flow_api.g_varchar2_table(128) := '0909090920202076617220746172676574203D2075726C2E7265706C61636528272154414721272C2076616C7565293B0A202020200909090909202020617065782E64656275672E6C6F6728225461726765743A20222C20746172676574293B0A090909';
 wwv_flow_api.g_varchar2_table(129) := '0909090A0909090909092020206966202873656C662E6F7074696F6E732E706167656D6F6465203D3D20276D6F64616C2729207B0A20090909090909202020202020617065782E6E617669676174696F6E2E6469616C6F672E636C6F736528747275652C';
 wwv_flow_api.g_varchar2_table(130) := '2074617267657420293B0A0909090909092020207D20656C7365207B20200A090909090909202020202020617065782E6E617669676174696F6E2E726564697265637420282074617267657420293B0A0909090909092020207D20200A0909090909097D';
 wwv_flow_api.g_varchar2_table(131) := '0A202020202020202020202020202020202020202020200A2020202020202020202020202020202020202020202020202F2F73656C662E24696E7075742E776964746828246974656D2E6F7574657257696474682829292E696E73657274416674657228';

@@ -322,7 +322,7 @@
 						var url = self.options.url;
 						
 						if (url.length > 0 ) {
-						   var target = url.replace('#TAG#', value);
+						   var target = url.replace('!TAG!', value);
     					   apex.debug.log("Target: ", target);
 						
 						   if (self.options.pagemode == 'modal') {
