@@ -28,7 +28,7 @@ prompt APPLICATION 103 - Sample Database Application
 -- Application Export:
 --   Application:     103
 --   Name:            Sample Database Application
---   Date and Time:   01:55 Wednesday September 8, 2021
+--   Date and Time:   02:05 Friday September 10, 2021
 --   Exported By:     DEMO
 --   Flashback:       0
 --   Export Type:     Component Export
@@ -115,24 +115,27 @@ wwv_flow_api.create_plugin(
 '    l_restricted := ''false'';',
 '  end if;',
 '   ',
-'  l_column_value_list :=',
+'  if l_tags_lov is not null',
+'  then',
+'    l_column_value_list :=',
 '        apex_plugin_util.get_data (',
-'            p_sql_statement    => l_tags_lov --p_item.lov_definition',
+'            p_sql_statement    => l_tags_lov',
 '           ,p_min_columns      => 1 --2',
 '           ,p_max_columns      => 1 --2',
 '           ,p_component_name   => p_item.name',
 '            );',
 '',
-'  --Example of a tags LOV list:',
-'  --l_tags_lov := ''[''''BAG'''', ''''WOMEN'''', ''''MEN'''', ''''ACCESSORY'''']'';',
-'  if l_column_value_list(1).count > 0',
-'  then',
-'    l_tags_lov := ''['';',
-'    for i in 1 .. l_column_value_list(1).count',
-'    loop',
-'      l_tags_lov := l_tags_lov || '''''''' || sys.htf.escape_sc(l_column_value_list(1)(i))|| '''''',''; -- return column',
-'    end loop;',
-'    l_tags_lov := rtrim(l_tags_lov) || '']'';',
+'    --Example of a tags LOV list:',
+'    --l_tags_lov := ''[''''BAG'''', ''''WOMEN'''', ''''MEN'''', ''''ACCESSORY'''']'';',
+'    if l_column_value_list(1).count > 0',
+'    then',
+'      l_tags_lov := ''['';',
+'      for i in 1 .. l_column_value_list(1).count',
+'      loop',
+'        l_tags_lov := l_tags_lov || '''''''' || sys.htf.escape_sc(l_column_value_list(1)(i))|| '''''',''; -- return column',
+'      end loop;',
+'      l_tags_lov := rtrim(l_tags_lov) || '']'';',
+'    end if;',
 '  end if;',
 '',
 '  sys.htp.prn(''<input type="text" id="''||l_item_name||''" name="''||l_item_name||''"" value="''||p_param.value||''">'');',
@@ -142,9 +145,11 @@ wwv_flow_api.create_plugin(
 '                                                 ||''create:'' || l_editable ||'',''',
 '                                                 ||''url:''''''|| l_target_url ||'''''',''',
 '                                                 ||''max:''''''|| l_max_tags ||'''''',''',
-'                                                 ||''pagemode:''''''|| l_page_mode ||'''''',''',
-'                                                 ||''autocomplete: {values: ''||l_tags_lov||'', ''',
-'                                                 ||''only: ''||l_restricted ||''}''',
+'                                                 ||''pagemode:''''''|| l_page_mode ||''''''''',
+'                                                 ||case',
+'                                                      when l_tags_lov is not null then '',autocomplete: {values: ''||l_tags_lov||'', ''||''only: ''||l_restricted ||''}''',
+'                                                      else null',
+'                                                   end',
 '                                                 ||'' });'';                                                    ',
 '  apex_javascript.add_onload_code (l_js_code);',
 '    ',
@@ -181,20 +186,20 @@ wwv_flow_api.create_plugin_attribute(
 ,p_is_required=>false
 ,p_is_translatable=>false
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Link Item Name P1_TAG, Value !TAG!',
-'',
+'Link Item Name P1_TAG, Value !TAG!<br>',
 'Sample report query for a tag:',
-'',
+'<pre>',
 'select p.product_id,',
 '       p.product_name, ',
 '       p.product_description, ',
 '       tags',
 'from demo_product_info p',
 'where (:P1_TAG is null',
-'   or instr('',''||tags||'','' , '',''||:P3_TAG||'','') > 0',
-')'))
+'   or instr('',''||tags||'','' , '',''||:P1_TAG||'','') > 0',
+')',
+'</pre>'))
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Optional link to another page when clicking on a tag. For example, a report page to show all records with that tag.',
+'Optional link to another page when clicking on a tag. For example, a report page to show all records with that tag.<br>',
 'Use !TAG! to pass the value of tag.'))
 );
 wwv_flow_api.create_plugin_attribute(
@@ -206,11 +211,15 @@ wwv_flow_api.create_plugin_attribute(
 ,p_prompt=>'Tags LOV query'
 ,p_attribute_type=>'SQL'
 ,p_is_required=>false
+,p_sql_min_column_count=>1
+,p_sql_max_column_count=>1
 ,p_is_translatable=>false
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<pre>',
 'select tag',
 'from mytags',
-'where tag_type = ''PRODUCT'''))
+'where tag_type = ''PRODUCT''',
+'</pre>'))
 ,p_help_text=>'A query that returns valid tags.'
 );
 wwv_flow_api.create_plugin_attribute(
