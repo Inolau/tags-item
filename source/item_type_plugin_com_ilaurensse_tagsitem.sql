@@ -28,7 +28,7 @@ prompt APPLICATION 103 - Sample Database Application
 -- Application Export:
 --   Application:     103
 --   Name:            Sample Database Application
---   Date and Time:   02:05 Friday September 10, 2021
+--   Date and Time:   15:53 Saturday September 11, 2021
 --   Exported By:     DEMO
 --   Flashback:       0
 --   Export Type:     Component Export
