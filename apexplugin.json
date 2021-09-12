@@ -21,7 +21,7 @@
   "oracle" : {
     "versions" : ["12.2.0.1"],
     "apex" : {
-      "versions" : ["20.2"],
+      "versions" : ["20.2.0"],
       "plugin" : {
         "internalName" : "DE.DANIELH.GT.NEWINSTANCE",
         "type" : "item",
