@@ -21,9 +21,9 @@
   "oracle" : {
     "versions" : ["12.2.0.1"],
     "apex" : {
-      "versions" : ["20.2.0"],
+      "versions" : ["20.2.0.00.20"],
       "plugin" : {
-        "internalName" : "DE.DANIELH.GT.NEWINSTANCE",
+        "internalName" : "COM.ILAURENSSE.TAGSITEM",
         "type" : "item",
         "demo" : "https://apex.oracle.com/pls/apex/ino/r/share/products",
         "previewImage" : "https://raw.githubusercontent.com/Inolau/tags-item/main/tagsitem.gif"
