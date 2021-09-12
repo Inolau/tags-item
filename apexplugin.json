@@ -1,0 +1,32 @@
+{
+  "name" : "TagsItem",
+  "version" : "1.0",
+  "description" : "Item type plugin to creata a list of tags.",
+  "keywords" : ["tags"],
+  "homepage" : "https://github.com/Inolau/tags-item",
+  "bugs" : {
+    "url" : "https://github.com/Inolau/tags-item/issues",
+    "email" : "ilaurensse@gmail.com"
+  },
+  "license" : "MIT",
+  "commercial" : "No",
+  "author" : {
+    "name" : "Ino Laurensse",
+    "email" : "ilaurensse@gmail.com"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/Inolau/tags-item"
+  },
+  "oracle" : {
+    "apex" : {
+      "versions" : ["20.2"],
+      "plugin" : {
+        "internalName" : "DE.DANIELH.GT.NEWINSTANCE",
+        "type" : "item",
+        "demo" : "https://apex.oracle.com/pls/apex/ino/r/share/products",
+        "previewImage" : "https://raw.githubusercontent.com/Inolau/tags-item/main/tagsitem.gif"
+      }
+    }
+  }
+}
